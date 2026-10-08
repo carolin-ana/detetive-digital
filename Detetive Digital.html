@@ -1,0 +1,1001 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Detetive Digital</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Zilla+Slab:wght@600;700&display=swap">
+<style>
+/* Layout: uma pasta de caso por vez. Mensagem suspeita à esquerda, caderno do detetive à direita; no celular, um embaixo do outro. */
+:root{
+  --fundo:#EAF0EF; --papel:#FFFFFF; --bolha:#E1EAE9; --tinta:#14262B; --suave:#44595F;
+  --linha:#B9C8C6; --destaque:#0B5D6B; --sobre-destaque:#FFFFFF;
+  --moldura:#1C2F35; --chat:#DCE9DF; --marca:#FFD84A; --sobre-marca:#14262B;
+  --seguro:#1B6637; --seguro-fundo:#DDF1E3; --risco:#9C2F1B; --risco-fundo:#FBE3DC;
+  --titulo:"Zilla Slab",Rockwell,Georgia,serif;
+  --texto:"Atkinson Hyperlegible",Verdana,Tahoma,sans-serif;
+  --escala:1;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --fundo:#0E1B1F; --papel:#17282D; --bolha:#21363C; --tinta:#EEF4F3; --suave:#AEC0C3;
+  --linha:#3A5158; --destaque:#74D0DC; --sobre-destaque:#0E1B1F;
+  --moldura:#05090B; --chat:#1B2F28; --marca:#F2C83A; --sobre-marca:#14262B;
+  --seguro:#86DBA2; --seguro-fundo:#163524; --risco:#FFA590; --risco-fundo:#40201A;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --fundo:#0E1B1F; --papel:#17282D; --bolha:#21363C; --tinta:#EEF4F3; --suave:#AEC0C3;
+  --linha:#3A5158; --destaque:#74D0DC; --sobre-destaque:#0E1B1F;
+  --moldura:#05090B; --chat:#1B2F28; --marca:#F2C83A; --sobre-marca:#14262B;
+  --seguro:#86DBA2; --seguro-fundo:#163524; --risco:#FFA590; --risco-fundo:#40201A;
+  color-scheme:dark}
+
+html{font-size:calc(125% * var(--escala))}
+*{box-sizing:border-box}
+body{background:var(--fundo);color:var(--tinta);font-family:var(--texto);font-size:1rem;line-height:1.5}
+.pagina{max-width:66rem;margin:0 auto;padding-inline:max(16px,3vw);padding-block:1rem 3rem;display:flex;flex-direction:column;gap:1.25rem}
+h1,h2,h3{font-family:var(--titulo);line-height:1.15;margin:0;text-wrap:balance}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:4px solid var(--marca);outline-offset:3px;box-shadow:0 0 0 2px var(--tinta)}
+
+/* Barra superior */
+.barra{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem;padding-bottom:.75rem;border-bottom:2px solid var(--linha)}
+.marca-nome{font-family:var(--titulo);font-weight:700;font-size:1.3rem;display:flex;align-items:center;gap:.5rem}
+.marca-nome svg{width:1.5rem;height:1.5rem;color:var(--destaque)}
+.ferramentas{display:flex;flex-wrap:wrap;gap:.5rem}
+.btn{min-height:3rem;padding:.6rem 1.1rem;border-radius:.6rem;border:2px solid var(--destaque);background:var(--papel);color:var(--destaque);font-weight:700;text-align:center}
+.btn:hover{background:var(--bolha)}
+.btn.principal{background:var(--destaque);color:var(--sobre-destaque)}
+.btn.principal:hover{filter:brightness(1.12);background:var(--destaque)}
+.btn.grande{font-size:1.15rem;min-height:3.6rem;padding:.8rem 1.6rem}
+.btn.letra{min-width:3rem;padding-inline:.6rem}
+
+/* Início */
+.inicio{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:2rem;align-items:start;padding-top:1rem}
+.inicio h1{font-size:clamp(2.4rem,7vw,3.8rem)}
+.lema{font-family:var(--titulo);font-size:1.5rem;margin-top:.5rem}
+.lema mark{background:var(--marca);color:var(--sobre-marca);padding:.05em .3em;border-radius:.2em}
+.inicio .bloco{display:flex;flex-direction:column;gap:1.25rem;min-width:0}
+.passos{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.75rem;counter-reset:p}
+.passos li{counter-increment:p;display:grid;grid-template-columns:2.4rem minmax(0,1fr);gap:.75rem;align-items:start}
+.passos li::before{content:counter(p);font-family:var(--titulo);font-weight:700;font-size:1.3rem;width:2.4rem;height:2.4rem;border-radius:50%;border:2px solid var(--destaque);color:var(--destaque);display:grid;place-items:center}
+.pasta{background:var(--papel);border:2px solid var(--linha);border-radius:.8rem;padding:1.25rem;display:flex;flex-direction:column;gap:1rem}
+.pasta h2{font-size:1.35rem}
+.nota{color:var(--suave)}
+.parceria{align-self:flex-start;display:flex;align-items:center;gap:.9rem;border:2px solid var(--linha);border-radius:.8rem;padding:.6rem 1rem .6rem .6rem;background:var(--papel)}
+.parceria img{width:6rem;height:auto;background:#FFFFFF;border-radius:.5rem;padding:.3rem;flex:none}
+.parceria span{min-width:0}
+.treino{background:var(--bolha);border-radius:.7rem;padding:.9rem;display:flex;flex-direction:column;gap:.6rem}
+.treino .retorno{font-weight:700;color:var(--seguro)}
+.treino .retorno:empty{display:none}
+.creditos{color:var(--suave);font-size:.85rem;border-top:2px solid var(--linha);padding-top:1rem}
+
+/* Caso */
+.cabeca-caso{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:.75rem}
+.rotulo{font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.8rem;color:var(--suave)}
+.cabeca-caso h1{font-size:clamp(1.7rem,5vw,2.3rem)}
+.etapas{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:.4rem}
+.etapas li{padding:.3rem .8rem;border-radius:2rem;border:2px solid var(--linha);color:var(--suave);font-weight:700;font-size:.9rem}
+.etapas li[aria-current]{background:var(--tinta);color:var(--fundo);border-color:var(--tinta)}
+.caso{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.5rem;align-items:start}
+.coluna{display:flex;flex-direction:column;gap:.75rem;min-width:0}
+.coluna h2{font-size:1.3rem}
+
+.mensagem{background:var(--papel);border:2px solid var(--linha);border-radius:1rem;overflow:hidden}
+.canal{background:var(--tinta);color:var(--fundo);padding:.5rem 1rem;font-weight:700;font-size:.9rem}
+.meta{padding:.75rem;display:flex;flex-direction:column;gap:.5rem;border-bottom:2px solid var(--linha)}
+.meta-linha{display:grid;grid-template-columns:5rem minmax(0,1fr);gap:.5rem;align-items:center}
+.meta-linha>span:first-child{color:var(--suave);font-weight:700;font-size:.85rem}
+.corpo{padding:.75rem;background:var(--bolha);display:flex;flex-direction:column;gap:.5rem}
+.fala{background:var(--papel);border-radius:.6rem;padding:.6rem .8rem;overflow-wrap:anywhere}
+.fala.pequena{font-size:.85rem;font-style:italic;color:var(--suave)}
+
+.trecho{display:grid;grid-template-columns:minmax(0,1fr) 1.6rem;gap:.6rem;align-items:center;width:100%;text-align:left;background:var(--papel);border:2px dashed var(--destaque);border-radius:.6rem;padding:.6rem .8rem;min-height:3rem;overflow-wrap:anywhere}
+.trecho svg{width:1.5rem;height:1.5rem;color:var(--destaque)}
+.trecho:hover{border-style:solid}
+.trecho.achado{background:var(--marca);color:var(--sobre-marca);border:2px solid var(--sobre-marca);font-weight:700}
+.trecho.achado svg{color:var(--sobre-marca)}
+.trecho.visto{border:2px solid var(--linha)}
+.trecho.visto svg{color:var(--suave)}
+.trecho.dica{animation:chama 1s ease-in-out 3;outline:4px solid var(--marca);outline-offset:2px}
+@keyframes chama{50%{outline-offset:7px}}
+@media (prefers-reduced-motion:reduce){.trecho.dica{animation:none}}
+
+.painel{background:var(--papel);border:2px solid var(--linha);border-radius:1rem;padding:1.1rem;display:flex;flex-direction:column;gap:1rem}
+.contagem{font-weight:700}
+.contagem b{font-family:var(--titulo);font-size:1.5rem}
+.pistas{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
+.pistas li{border-left:.5rem solid var(--marca);padding:.2rem 0 .2rem .8rem}
+.pistas li.obs{border-left-color:var(--linha)}
+.pistas strong{display:block}
+.vazio{border:2px dashed var(--linha);border-radius:.6rem;padding:1rem;color:var(--suave)}
+.acoes{display:flex;flex-wrap:wrap;gap:.6rem}
+.acoes .btn{flex:1 1 12rem}
+
+.opcoes{display:flex;flex-direction:column;gap:.7rem}
+.opcao{width:100%;text-align:left;background:var(--papel);border:2px solid var(--destaque);border-radius:.7rem;padding:.9rem 1rem;min-height:3.6rem;font-weight:700;font-size:1.05rem}
+.opcao:hover{background:var(--bolha)}
+
+.veredito{display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:.8rem;align-items:center;border-radius:.7rem;padding:.9rem 1rem;border:2px solid}
+.veredito svg{width:2.6rem;height:2.6rem}
+.veredito h2{font-size:1.4rem}
+.veredito.seguro{background:var(--seguro-fundo);color:var(--seguro);border-color:var(--seguro)}
+.veredito.risco{background:var(--risco-fundo);color:var(--risco);border-color:var(--risco)}
+.escolha{color:var(--suave)}
+.regra{background:var(--bolha);border-radius:.6rem;padding:.8rem 1rem}
+.regra b{font-family:var(--titulo);font-size:1.1rem;display:block}
+.sinais{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
+.sinais li{display:grid;grid-template-columns:1.5rem minmax(0,1fr);gap:.6rem;align-items:start}
+.sinais svg{width:1.4rem;height:1.4rem;margin-top:.15rem}
+.sinais .sim svg{color:var(--seguro)} .sinais .nao svg{color:var(--suave)}
+.sinais small{display:block;color:var(--suave);font-size:.85rem}
+
+/* Fim */
+.fim{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.5rem;align-items:start}
+.fim h1{font-size:clamp(2rem,6vw,3rem)}
+.placar{display:flex;flex-wrap:wrap;gap:1.5rem}
+.placar div b{font-family:var(--titulo);font-size:2.6rem;display:block;line-height:1;font-variant-numeric:tabular-nums}
+.resumo{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem}
+.resumo li{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.25rem .75rem;border-bottom:1px solid var(--linha);padding-bottom:.5rem}
+.selo{font-weight:700}
+.selo.s{color:var(--seguro)} .selo.r{color:var(--suave)}
+.incentivo{font-size:1.15rem;color:var(--sobre-marca);font-weight:700}
+.regras{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:.5rem}
+
+dialog{border:2px solid var(--tinta);border-radius:1rem;background:var(--papel);color:var(--tinta);padding:1.5rem;width:min(34rem,calc(100vw - 32px));max-height:calc(100% - 32px)}
+dialog::backdrop{background:rgba(8,18,21,.7)}
+dialog .dentro{display:flex;flex-direction:column;gap:1.1rem}
+dialog h2{font-size:1.6rem}
+.so-leitor{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+
+@media (max-width:820px){
+  .inicio,.caso,.fim{grid-template-columns:minmax(0,1fr)}
+}
+
+.trecho.pequena{font-size:.85rem;font-style:italic}
+.trecho.bom{background:var(--seguro-fundo);border:2px solid var(--seguro);font-weight:700}
+.trecho.bom svg{color:var(--seguro)}
+.trecho.parado{cursor:default}
+.fala.nua{padding:0;background:none}
+.pistas li.a{border-left-color:var(--marca)} .pistas li.b{border-left-color:var(--seguro)} .pistas li.n{border-left-color:var(--linha)}
+.pistas .rotulo{display:block}
+.veredito.excesso{background:var(--bolha);color:var(--tinta);border-color:var(--tinta)}
+.depois{border:2px solid var(--linha);border-radius:.6rem;padding:.8rem 1rem}
+.depois b{font-family:var(--titulo);font-size:1.1rem;display:block}
+.sinais .a svg{color:var(--risco)} .sinais .b svg{color:var(--seguro)}
+.nivel{max-width:38rem;margin:1.5rem auto 0;padding:2rem 1.5rem;gap:1.1rem}
+.nivel h1{font-size:clamp(2rem,6vw,3rem)}
+
+/* Parte 2: aparelhos, guia, distintivos */
+.trecho{color:var(--tinta)}
+.btn svg{width:1.3rem;height:1.3rem;vertical-align:-.25rem;margin-right:.4rem}
+.guia{display:grid;grid-template-columns:4.5rem minmax(0,1fr);gap:.75rem;align-items:start}
+.guia>svg{width:4.5rem;height:auto}
+.balao{background:var(--papel);border:2px solid var(--linha);border-radius:.3rem 1rem 1rem 1rem;padding:.7rem .9rem}
+.balao.incentivo{background:var(--marca);border-color:var(--sobre-marca)}
+.aparelho{width:100%;max-width:25rem;margin-inline:auto;background:var(--moldura);border:2px solid var(--linha);border-radius:2rem;padding:.6rem}
+.tela{background:var(--papel);border-radius:1.5rem;overflow:hidden;display:flex;flex-direction:column}
+.status{display:flex;justify-content:space-between;padding:.35rem 1.1rem .2rem;font-size:.75rem;font-weight:700;color:var(--suave);font-variant-numeric:tabular-nums}
+.app-topo{display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:.6rem;align-items:center;padding:.6rem .75rem;border-bottom:2px solid var(--linha)}
+.quem{display:flex;flex-direction:column;gap:.25rem;min-width:0}
+.quem .nome,.quem .fala{font-weight:700;overflow-wrap:anywhere}
+.quem .nota{font-size:.85rem}
+.avatar{width:2.6rem;height:2.6rem;border-radius:50%;background:var(--bolha);color:var(--suave);display:grid;place-items:center;font-family:var(--titulo);font-weight:700;font-size:1.3rem}
+.avatar svg{width:1.7rem;height:1.7rem}
+.conversa{padding:.75rem;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem;background:var(--bolha);min-height:6rem}
+.chat .conversa{background:var(--chat)}
+.conversa .fala,.conversa .trecho{max-width:94%;width:auto;border-radius:.3rem 1rem 1rem 1rem}
+.conversa .rotulo{margin-bottom:.1rem}
+.chamada{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.5rem;padding:1.1rem .75rem;border-bottom:2px solid var(--linha)}
+.chamada .avatar{width:4rem;height:4rem;font-size:1.8rem}
+.chamada .avatar svg{width:2.4rem;height:2.4rem}
+.chamada .quem{align-items:center}
+.em-curso{font-weight:700;color:var(--seguro);font-size:.9rem}
+.bloqueio{background:var(--bolha);padding:1rem .75rem 1.25rem;display:flex;flex-direction:column;gap:1rem}
+.relogio{font-family:var(--titulo);font-size:3rem;line-height:1;text-align:center;font-variant-numeric:tabular-nums}
+.notif{background:var(--papel);border-radius:1rem;overflow:hidden;border:2px solid var(--linha)}
+.notif .conversa{background:var(--papel);min-height:0}
+.notif .fala{padding:.2rem .1rem}
+.janela{border:2px solid var(--linha);border-radius:.8rem;overflow:hidden;background:var(--papel)}
+.janela-topo{display:flex;align-items:center;gap:.4rem;padding:.5rem .8rem;background:var(--bolha);font-weight:700;font-size:.85rem;color:var(--suave)}
+.janela-topo i{width:.7rem;height:.7rem;border-radius:50%;background:var(--linha)}
+.janela-topo span{margin-left:.4rem}
+.janela .corpo{background:var(--papel)}
+.janela .fala{padding:.2rem .1rem}
+.distintivo{display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:.8rem;align-items:center;border:2px dashed var(--linha);border-radius:.7rem;padding:.7rem 1rem;color:var(--suave)}
+.distintivo.ganho{border:2px solid var(--sobre-marca);background:var(--marca);color:var(--sobre-marca)}
+.distintivo b{display:block;font-family:var(--titulo);font-size:1.1rem}
+.distintivo svg{width:2.6rem;height:2.6rem}
+.medalhas{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(11rem,1fr));gap:.6rem}
+.medalhas li{display:grid;grid-template-columns:2rem minmax(0,1fr);gap:.5rem;align-items:center;border:2px dashed var(--linha);border-radius:.6rem;padding:.5rem .6rem;color:var(--suave);font-size:.9rem}
+.medalhas li.ganho{border:2px solid var(--sobre-marca);background:var(--marca);color:var(--sobre-marca);font-weight:700}
+.medalhas svg{width:2rem;height:2rem}
+.medalhas small{display:block;font-weight:400;font-size:.8rem}
+
+/* Parte 3: certificado, instrutor, modo dupla */
+.btn[aria-pressed="true"],.btn[aria-pressed="true"]:hover{background:var(--tinta);color:var(--fundo);border-color:var(--tinta)}
+.dupla{display:flex;flex-direction:column;gap:.4rem;align-items:flex-start}
+.pergunta{font-family:var(--titulo);font-size:1.4rem;line-height:1.25;text-wrap:balance}
+.form-cert{display:flex;flex-direction:column;gap:.7rem}
+.form-cert label{font-weight:700}
+.campo{font:inherit;min-height:3rem;width:100%;padding:.5rem .8rem;border:2px solid var(--destaque);border-radius:.6rem;background:var(--papel);color:var(--tinta)}
+.erro{color:var(--risco);font-weight:700}
+.cert-area{display:flex;flex-direction:column;gap:1rem;align-items:center}
+.cert{width:100%;max-width:44rem;background:var(--papel);border:.45rem double var(--destaque);border-radius:.6rem;padding:2rem 1.5rem;text-align:center;display:flex;flex-direction:column;gap:.9rem;align-items:center}
+.cert h1{font-size:clamp(2.2rem,7vw,3.4rem)}
+.cert-logos{display:flex;align-items:center;justify-content:center;gap:1.5rem}
+.cert-logos img{width:6.5rem;height:auto;background:#FFFFFF;border-radius:.5rem;padding:.3rem}
+.cert-logos svg{width:5.5rem;height:auto}
+.cert-nome{font-family:var(--titulo);font-weight:700;font-size:clamp(1.8rem,6vw,2.6rem);line-height:1.2;border-bottom:.35rem solid var(--marca);padding:0 .6rem .1rem;overflow-wrap:anywhere;max-width:100%}
+.cert-rodape{font-size:.8rem;max-width:34rem}
+.instrutor{display:flex;flex-direction:column;gap:1.25rem}
+.instrutor h1{font-size:clamp(1.8rem,5vw,2.4rem)}
+.rolagem{overflow-x:auto;border:2px solid var(--linha);border-radius:.8rem;background:var(--papel)}
+.tabela{border-collapse:collapse;width:100%;min-width:42rem;font-size:.9rem}
+.tabela th,.tabela td{text-align:left;padding:.55rem .7rem;border-bottom:1px solid var(--linha);vertical-align:top}
+.tabela thead th{font-size:.8rem;letter-spacing:.04em;text-transform:uppercase;color:var(--suave)}
+.tabela td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.tabela tbody tr:last-child td,.tabela tbody tr:last-child th{border-bottom:0}
+.resumo-texto{font:inherit;font-size:.85rem;width:100%;min-height:9rem;padding:.6rem .8rem;border:2px solid var(--linha);border-radius:.6rem;background:var(--papel);color:var(--tinta)}
+.lista-simples{margin:0;padding-left:1.3rem;display:flex;flex-direction:column;gap:.3rem}
+
+/* Nome, progresso salvo e recorde pessoal */
+.nomes .btn{flex:0 1 auto}
+.recorde{background:var(--bolha);border-radius:.6rem;padding:.8rem 1rem}
+.recorde b{font-family:var(--titulo);font-size:1.1rem;display:block}
+.retomar{max-width:38rem;margin:1.5rem auto 0;padding:2rem 1.5rem;gap:1.1rem}
+</style>
+
+<div class="pagina">
+  <header class="barra">
+    <div class="marca-nome"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="M15 15l6 6"/></svg>Detetive Digital</div>
+    <div class="ferramentas">
+      <button class="btn letra" id="letra-menor" data-ato="letra" data-v="-1" aria-label="Diminuir o tamanho da letra">A−</button>
+      <button class="btn letra" id="letra-maior" data-ato="letra" data-v="1" aria-label="Aumentar o tamanho da letra">A+</button>
+      <button class="btn" id="botao-som" data-ato="som" aria-pressed="false">Som desligado</button>
+      <button class="btn" id="abrir-ajuda" data-ato="ajuda">Como jogar</button>
+    </div>
+  </header>
+  <main id="palco"></main>
+  <p class="so-leitor" id="aviso" aria-live="polite"></p>
+</div>
+
+<dialog id="ajuda" aria-labelledby="ajuda-titulo">
+  <div class="dentro">
+    <h2 id="ajuda-titulo">Como jogar</h2>
+    <ol class="passos">
+      <li><div><strong>Leia a mensagem.</strong> Ela é uma simulação. Nada aqui é de verdade.</div></li>
+      <li><div><strong>Investigue.</strong> Clique nas partes com a lupa e a borda tracejada. Cada clique mostra um sinal de alerta, um sinal de confiança ou uma observação.</div></li>
+      <li><div><strong>Decida.</strong> Escolha o que você faria nessa situação.</div></li>
+      <li><div><strong>Entenda.</strong> O jogo mostra o que aconteceu depois e explica o porquê.</div></li>
+    </ol>
+    <p class="nota">Nem toda mensagem é golpe: algumas são verdadeiras. Não há limite de tempo. Você pode abrir esta ajuda quando quiser.</p>
+    <button class="btn principal grande" id="fechar-ajuda" data-ato="fechar-ajuda">Entendi</button>
+    <button class="btn" id="ir-inicio" data-ato="inicio">Voltar à página inicial</button>
+    <p class="nota">Quem entrou com o nome não perde nada ao voltar: o progresso fica salvo neste computador.</p>
+  </div>
+</dialog>
+
+<script>
+const LUPA='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="M15 15l6 6"/></svg>';
+const CERTO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>';
+const ALERTA='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3L2 20h20L12 3z"/><path d="M12 10v5M12 17.6v.2"/></svg>';
+const PONTO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/></svg>';
+
+const LOGO="data:image/png;base64,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";
+const NIVEIS=[
+ {nome:"Sinais claros",desc:"Os sinais aparecem com facilidade. Atenção: nem toda mensagem é golpe. Algumas são verdadeiras, e cabe a você descobrir."},
+ {nome:"Olhe com atenção",desc:"Agora os sinais são mais discretos. Investigue todas as partes da mensagem antes de decidir."},
+ {nome:"Golpes bem-feitos",desc:"Estes golpes parecem oficiais e usam assuntos verdadeiros. Vá com calma. Não há limite de tempo."}
+];
+
+/* Em cada parte clicável: a = sinal de alerta, b = sinal de confiança, n = observação neutra.
+   Em cada opção: tipo "boa", "risco" ou "excesso" (cuidado demais em mensagem verdadeira). */
+const CASOS=[
+/* ---------- Nível 1 ---------- */
+{nivel:1,golpe:true,titulo:"O prêmio de R$ 5.000",tipo:"Falso prêmio",canal:"Mensagem de texto (SMS)",
+ intro:"Você recebe esta mensagem no celular.",
+ remetente:{txt:"(11) 94002-7781",sub:"Número que não está nos seus contatos"},
+ linhas:[
+  {txt:"Parabéns! Você ganhou um prêmio de R$ 5.000!",a:{t:"Prêmio inesperado",e:"Você não participou de nenhum sorteio. Ninguém ganha prêmio sem ter concorrido."}},
+  {txt:"Clique aqui para receber: premio-sorte-brasil.top/receber",a:{t:"Link desconhecido",e:"O endereço não é de nenhuma empresa que você conhece. Links assim podem levar a páginas falsas."}},
+  {txt:"Informe seu CPF e os dados do cartão para liberar o valor.",a:{t:"Pedido de informações",e:"Quem dá um prêmio de verdade não precisa dos dados do seu cartão."}},
+  {txt:"Válido somente até hoje!",a:{t:"Urgência",e:"A pressa serve para você agir sem pensar e sem perguntar a ninguém."}}],
+ opcoes:[
+  {txt:"Clicar no link para ver o prêmio",tipo:"risco",depois:"A página pediu CPF e dados do cartão. Dias depois, apareceram compras que você não fez.",porque:"O link abre uma página falsa, feita para copiar seus dados."},
+  {txt:"Responder pedindo mais detalhes",tipo:"risco",depois:"Chegaram mais mensagens e até ligações insistindo no prêmio.",porque:"Ao responder, você mostra ao golpista que o seu número está ativo."},
+  {txt:"Não clicar, apagar a mensagem e bloquear o número",tipo:"boa",depois:"Nada aconteceu. O golpista ficou sem resposta e desistiu.",porque:"Sem clique e sem resposta, o golpe não avança."}],
+ regra:"Prêmio que você não esperava e que pede seus dados é golpe."},
+
+{nivel:1,golpe:false,titulo:"O lembrete da clínica",tipo:"Mensagem verdadeira",canal:"Mensagem de texto (SMS)",
+ intro:"Na semana passada você marcou uma consulta na Clínica Vida Plena, inventada para o jogo. Hoje chega esta mensagem.",
+ remetente:{txt:"Clínica Vida Plena",sub:"Mesma conversa em que a clínica confirmou a marcação",b:{t:"Remetente conhecido",e:"A mensagem chega na mesma conversa que você já tinha com a clínica."}},
+ linhas:[
+  {txt:"Olá! Lembrete da sua consulta com a Dra. Helena.",b:{t:"Informação que confere",e:"É a médica com quem você marcou."}},
+  {txt:"Quinta-feira, às 14h30.",b:{t:"Dia e horário conferem",e:"É o mesmo dia e horário anotados no seu cartão de consultas."}},
+  {txt:"Responda 1 para confirmar ou 2 para desmarcar.",b:{t:"Não pede nada sigiloso",e:"A mensagem só pede um número. Não pede senha, documento nem dinheiro."}},
+  {txt:"Dúvidas? Ligue para a recepção.",n:"Não há link nem pressa. Você pode ligar para o telefone que já tem da clínica."}],
+ opcoes:[
+  {txt:"Apagar e bloquear, porque pode ser golpe",tipo:"excesso",depois:"A clínica não recebeu a confirmação e passou a sua vaga para outra pessoa.",porque:"Desconfiar é bom, mas aqui todos os sinais eram de confiança. Na dúvida, o melhor é ligar para a clínica, não bloquear."},
+  {txt:"Responder 1 para confirmar a consulta",tipo:"boa",depois:"A clínica confirmou e você foi à consulta no horário.",porque:"A mensagem veio de quem você esperava, com informações que conferem, e não pediu nada sigiloso."},
+  {txt:"Responder com CPF e número do convênio, para adiantar",tipo:"risco",depois:"Nada de grave aconteceu desta vez, mas seus dados ficaram em uma mensagem sem necessidade.",porque:"Mesmo em mensagem verdadeira, não envie dados que ninguém pediu."}],
+ regra:"Nem toda mensagem é golpe. Veja se ela vem de quem você esperava e se não pede nada sigiloso."},
+
+{nivel:1,golpe:true,titulo:"O código de seis números",tipo:"Pedido de senha",canal:"Aplicativo de mensagens",
+ intro:"Logo depois de chegar um SMS com um código, você recebe esta mensagem.",
+ remetente:{txt:"(21) 97700-4410",sub:"Diz ser o “Suporte Técnico”",a:{t:"Remetente desconhecido",e:"É um número comum de celular. O suporte de verdade não conversa com você por um número assim."}},
+ linhas:[
+  {txt:"Olá! Somos do suporte do seu aplicativo de mensagens."},
+  {txt:"Enviamos um código de 6 números por SMS. Digite o código aqui para confirmar a sua conta.",a:{t:"Informação que não se compartilha",e:"Esse código é a chave da sua conta. Com ele, outra pessoa passa a usar o seu aplicativo no celular dela."}},
+  {txt:"Se não informar em 5 minutos, a conta será apagada.",a:{t:"Tentativa de gerar urgência",e:"O prazo curto é para você não ter tempo de desconfiar."}}],
+ opcoes:[
+  {txt:"Enviar o código para não perder a conta",tipo:"risco",depois:"O aplicativo parou de funcionar no seu celular. O golpista passou a pedir dinheiro aos seus contatos usando o seu nome.",porque:"Com o código, outra pessoa entra na sua conta e se passa por você."},
+  {txt:"Enviar só a metade do código",tipo:"risco",depois:"O golpista disse que faltava pouco e continuou pressionando.",porque:"Continuar a conversa é arriscado. O golpista insiste até conseguir o resto."},
+  {txt:"Não informar o código e bloquear o número",tipo:"boa",depois:"Sua conta continuou funcionando normalmente. O prazo de 5 minutos era mentira.",porque:"Código e senha são só seus. Nenhuma empresa pede que você repasse um código por mensagem."}],
+ regra:"Senha e código de confirmação não se passam para ninguém."},
+
+{nivel:1,golpe:true,titulo:"A corrente da família",tipo:"Link suspeito",canal:"Grupo “Família” no aplicativo de mensagens",
+ intro:"Sua prima Célia envia esta mensagem no grupo da família.",
+ remetente:{txt:"Prima Célia",sub:"Contato salvo no seu celular",n:"A Célia é mesmo a sua prima. Mas pessoas conhecidas também repassam golpes sem saber."},
+ linhas:[
+  {txt:"Encaminhada muitas vezes",pequena:true,a:{t:"Mensagem repassada",e:"Esse aviso mostra que a Célia não escreveu a mensagem. Ninguém sabe quem criou."}},
+  {txt:"URGENTE!!! Governo libera R$ 1.200 para todos os aposentados!",a:{t:"Mensagem chamativa",e:"Letras maiúsculas, exclamações e promessa de dinheiro servem para apressar o clique."}},
+  {txt:"Veja se o seu nome está na lista: auxilio-liberado.cadastro-gov.xyz",a:{t:"Endereço que não é do governo",e:"Serviços oficiais do Governo Federal usam endereços com “gov.br”. Este tem “gov” no nome, mas termina em “.xyz”."}},
+  {txt:"Repasse para 10 contatos para liberar o seu.",a:{t:"Pedido para compartilhar",e:"Nenhum benefício depende de repassar mensagem. É assim que o golpe se espalha."}}],
+ opcoes:[
+  {txt:"Abrir o link para ver se o meu nome está na lista",tipo:"risco",depois:"A página pediu nome, CPF e dados bancários para “liberar” o valor. O benefício não existia.",porque:"O endereço não é do governo. A página existe para recolher seus dados."},
+  {txt:"Não abrir e conferir a notícia em um canal oficial",tipo:"boa",depois:"No canal oficial não havia nenhum benefício assim. Você avisou a Célia, que apagou a mensagem do grupo.",porque:"Benefícios se conferem no site oficial, no telefone oficial ou no atendimento presencial."},
+  {txt:"Repassar para os amigos, por via das dúvidas",tipo:"risco",depois:"Dois amigos abriram o link por confiarem em você.",porque:"Repassar coloca outras pessoas em risco e ajuda o golpe a crescer."}],
+ regra:"Link que chegou repassado, com promessa e pressa: não abra antes de conferir."},
+
+/* ---------- Nível 2 ---------- */
+{nivel:2,golpe:true,titulo:"O aviso do banco",tipo:"Falso banco",canal:"E-mail",
+ intro:"Este e-mail chega à sua caixa de entrada. O Banco Aurora é um banco inventado para o jogo.",
+ remetente:{txt:"seguranca@banco-aurora-atendimento.net",sub:"Banco Aurora",a:{t:"Endereço suspeito",e:"O endereço parece o do banco, mas não é. O banco verdadeiro usa o próprio site, sem palavras a mais como “atendimento.net”."}},
+ assunto:{txt:"Sua conta será bloqueada em 24 horas",a:{t:"Pressão para agir rápido",e:"A ameaça de bloqueio assusta e apressa. Bancos não bloqueiam contas por e-mail com prazo de horas."}},
+ linhas:[
+  {txt:"Prezado cliente, identificamos um problema na sua conta."},
+  {txt:"Para regularizar, acesse: http://aurora-regularizar.com/conta",a:{t:"Link fora do canal oficial",e:"O link não leva ao site nem ao aplicativo do banco. O caminho seguro é o aplicativo que você já usa."}},
+  {txt:"Confirme o número da conta, a senha e o CPF.",a:{t:"Pedido de dados",e:"Banco nenhum pede senha por e-mail, mensagem ou telefone."}},
+  {txt:"O e-mail tem o logotipo e as cores do banco.",pequena:true,n:"A aparência é igual à do banco. Mas logotipo e cores são fáceis de copiar."}],
+ opcoes:[
+  {txt:"Clicar no link e preencher os dados",tipo:"risco",depois:"A página era idêntica à do banco. Minutos depois, alguém entrou na sua conta com a senha que você digitou.",porque:"A página é uma cópia. Tudo o que você digita vai direto para o golpista."},
+  {txt:"Não clicar e ligar para o telefone que está no verso do cartão",tipo:"boa",depois:"A atendente confirmou que não havia problema nenhum na conta.",porque:"O telefone do cartão e a agência são canais oficiais. Lá você confirma se existe algum problema de verdade."},
+  {txt:"Responder ao e-mail perguntando se é verdade",tipo:"risco",depois:"Veio uma resposta rápida e educada, repetindo o link e o prazo.",porque:"Quem recebe a sua resposta é o próprio golpista. Ele vai dizer que é verdade."}],
+ regra:"Na dúvida sobre o banco, procure o banco pelo canal oficial. Nunca pelo link da mensagem."},
+
+{nivel:2,golpe:true,titulo:"O número novo do filho",tipo:"Golpe envolvendo Pix",canal:"Aplicativo de mensagens",
+ intro:"Uma conversa nova aparece no seu aplicativo de mensagens.",
+ remetente:{txt:"(11) 95550-1234",sub:"Número que não está nos seus contatos"},
+ linhas:[
+  {txt:"Oi, mãe. Meu celular quebrou. Este é o meu número novo, pode salvar.",a:{t:"Mudança repentina de número",e:"Dizer que trocou de número é o começo mais comum deste golpe. Qualquer pessoa pode escrever isso."}},
+  {txt:"Preciso pagar uma conta de R$ 1.850 e o aplicativo do meu banco não abre.",a:{t:"Pedido inesperado",e:"Um pedido de dinheiro alto, do nada, por mensagem, merece desconfiança."}},
+  {txt:"Faz um Pix agora? Tem que ser nos próximos 10 minutos.",a:{t:"Transferência imediata",e:"O Pix cai na hora e é difícil de recuperar. Por isso o golpista quer que seja agora."}},
+  {txt:"Por favor, estou desesperado. Não comenta com ninguém.",a:{t:"Pressão emocional",e:"Mexer com o seu carinho e pedir segredo impede você de confirmar a história com outra pessoa."}}],
+ opcoes:[
+  {txt:"Ligar para o número antigo do meu filho antes de qualquer coisa",tipo:"boa",depois:"Seu filho atendeu no número de sempre. O celular dele estava funcionando.",porque:"Uma ligação para o número que você já tem resolve a dúvida em um minuto."},
+  {txt:"Fazer o Pix, porque é o meu filho",tipo:"risco",depois:"O dinheiro caiu na conta de um desconhecido. À noite, seu filho ligou do número de sempre, sem saber de nada.",porque:"Você ainda não sabia se era o seu filho. A mensagem não prova quem escreveu."},
+  {txt:"Pedir que mande a chave Pix de novo",tipo:"risco",depois:"A chave veio na hora, em nome de outra pessoa, com mais pressão para transferir.",porque:"Isso mantém a conversa com o golpista e deixa você a um passo de transferir."}],
+ regra:"Pediram Pix por mensagem? Ligue para o número antigo da pessoa antes de enviar."},
+
+{nivel:2,golpe:false,titulo:"A compra na farmácia",tipo:"Mensagem verdadeira",canal:"Aviso do aplicativo do Banco Aurora",
+ intro:"Você acabou de comprar remédios na Farmácia Bem Viver e pagou R$ 86,40 com o cartão. Na mesma hora aparece este aviso no celular.",
+ remetente:{txt:"Banco Aurora",sub:"Aviso do aplicativo que você mesmo instalou",b:{t:"Veio do aplicativo oficial",e:"O aviso aparece pelo aplicativo do banco, que já está no seu celular. Não é SMS nem e-mail de desconhecido."}},
+ linhas:[
+  {txt:"Compra aprovada: R$ 86,40 na Farmácia Bem Viver.",b:{t:"Informação que confere",e:"É o valor e o lugar da compra que você acabou de fazer."}},
+  {txt:"Cartão com final 4821.",n:"Mostra só o final do cartão. Isso é comum e não revela o número inteiro."},
+  {txt:"Não reconhece esta compra? Abra o aplicativo ou ligue para o número no verso do cartão.",b:{t:"Indica o canal oficial",e:"O aviso não traz link nem telefone novo. Ele manda você para os canais que você já conhece."}}],
+ opcoes:[
+  {txt:"Procurar o telefone do banco na internet e ligar para o primeiro que aparecer",tipo:"risco",depois:"O primeiro resultado era um anúncio com um número falso. A “atendente” pediu a sua senha.",porque:"Telefones encontrados em buscas podem ser falsos. O número certo é o que está no verso do cartão."},
+  {txt:"Cancelar o cartão, porque mensagem de banco é sempre golpe",tipo:"excesso",depois:"Você ficou alguns dias sem cartão, esperando o novo chegar.",porque:"Avisos de compra são uma proteção. Eles ajudam você a perceber rápido quando há uma compra que não é sua."},
+  {txt:"Conferir o valor com a nota da farmácia e seguir tranquilo",tipo:"boa",depois:"O valor batia com a nota. Estava tudo certo.",porque:"O aviso veio do aplicativo oficial, confere com o que você fez e não pede nada."}],
+ regra:"Aviso verdadeiro confere com o que você fez e não pede senha, link ou dinheiro."},
+
+{nivel:2,golpe:true,titulo:"O vizinho em apuros",tipo:"Perfil falso",canal:"Aplicativo de mensagens",
+ intro:"Chega uma mensagem com o nome e a foto do Seu Antônio, seu vizinho.",
+ remetente:{txt:"(85) 98123-0077",sub:"Antônio (vizinho), com a foto dele",a:{t:"Número diferente",e:"O Seu Antônio já está nos seus contatos com outro número. Este tem até o código de outro estado."}},
+ linhas:[
+  {txt:"Boa tarde, aqui é o Antônio, seu vizinho.",n:"O nome e a foto são do Seu Antônio. Mas nome e foto podem ser copiados por qualquer pessoa."},
+  {txt:"Prezada, necessito de um auxílio financeiro.",a:{t:"Jeito diferente de falar",e:"O Seu Antônio nunca escreveu desse jeito formal. Quando a pessoa “muda de jeito”, pode não ser ela."}},
+  {txt:"Pode me emprestar R$ 800? Devolvo amanhã cedo.",a:{t:"Pedido de dinheiro",e:"Pedir dinheiro por mensagem é o objetivo do perfil falso."}},
+  {txt:"É urgente, preciso agora.",a:{t:"Pedido urgente",e:"A urgência aparece de novo. Ela é o sinal mais repetido nos golpes."}}],
+ opcoes:[
+  {txt:"Emprestar, porque a foto é dele",tipo:"risco",depois:"O dinheiro foi para um desconhecido. O Seu Antônio de verdade nem sabia da mensagem.",porque:"A foto não prova nada. Qualquer pessoa pode copiar uma foto e usar em outro número."},
+  {txt:"Perguntar por mensagem se é ele mesmo",tipo:"risco",depois:"A resposta veio rápida: “Sou eu sim, pode confiar.” E o pedido se repetiu.",porque:"O golpista sempre responde que sim. Perguntar na mesma conversa não confirma nada."},
+  {txt:"Falar com o Seu Antônio pessoalmente ou pelo número antigo",tipo:"boa",depois:"O Seu Antônio estava em casa e não tinha pedido nada. Ele avisou os outros vizinhos.",porque:"Confirmar por outro caminho, que você já conhece, mostra na hora se o pedido é verdadeiro."}],
+ regra:"Foto e nome podem ser copiados. Confirme com a pessoa por outro caminho."},
+
+/* ---------- Nível 3 ---------- */
+{nivel:3,golpe:true,titulo:"A ligação da central",tipo:"Falsa central telefônica",canal:"Ligação telefônica",
+ intro:"O telefone toca. Uma pessoa educada, com música de espera ao fundo, fala com você. Leia o que ela diz.",
+ remetente:{txt:"0800 721 4400",sub:"Diz ser da Central de Segurança do Banco Aurora",n:"O número parece de uma central. Mas golpistas conseguem fazer aparecer na tela um número parecido com o do banco."},
+ linhas:[
+  {txt:"Bom dia. Confirmo o seu nome completo e os três primeiros números do seu CPF.",a:{t:"Saber seus dados não prova nada",e:"Nome e CPF vazam com frequência. Quem tem esses dados não é, por isso, do banco."}},
+  {txt:"Identificamos uma compra suspeita de R$ 3.900 no seu cartão.",a:{t:"Susto para apressar",e:"Um valor alto assusta e faz a pessoa querer resolver na hora, sem pensar."}},
+  {txt:"Para cancelar, digite a senha do cartão no teclado do telefone.",a:{t:"Pedido de senha",e:"O banco não pede a sua senha em uma ligação que ele mesmo fez."}},
+  {txt:"Depois, transfira o saldo para uma conta segura que vou informar.",a:{t:"A “conta segura”",e:"Não existe conta segura fora da sua. Esse pedido é a marca deste golpe."}},
+  {txt:"Não desligue, senão a compra será aprovada.",a:{t:"Impede você de conferir",e:"Quem não deixa você desligar não quer que você ligue para o banco de verdade."}}],
+ opcoes:[
+  {txt:"Seguir as instruções, já que a pessoa sabe os meus dados",tipo:"risco",depois:"O saldo foi transferido para a conta do golpista. A compra suspeita nunca existiu.",porque:"A pessoa sabia o seu nome e parte do CPF, mas isso não prova que ela é do banco."},
+  {txt:"Não passar a senha, mas continuar na linha ouvindo",tipo:"risco",depois:"A conversa durou 40 minutos. A pessoa trocou de argumento várias vezes, até quase convencer você.",porque:"Quanto mais tempo na linha, mais chances o golpista tem de convencer. Desligar é a proteção."},
+  {txt:"Desligar e ligar eu mesmo para o número no verso do cartão",tipo:"boa",depois:"O banco verdadeiro informou que não havia compra suspeita nem ligação da central.",porque:"Quando é você quem liga para o número oficial, tem certeza de com quem está falando."}],
+ regra:"Ligaram pedindo senha ou transferência? Desligue e ligue você para o número oficial."},
+
+{nivel:3,golpe:true,titulo:"A conta de luz",tipo:"Boleto falso",canal:"E-mail",
+ intro:"Você paga a conta de luz todo mês, em torno de R$ 140, sempre no dia 20. A Luz do Vale é uma empresa inventada para o jogo. Hoje, dia 8, chega este e-mail.",
+ remetente:{txt:"cobranca@luzdovale-faturas.com",sub:"Luz do Vale Energia",a:{t:"Endereço parecido, mas diferente",e:"A conta verdadeira chega pelo site ou aplicativo da empresa. Este endereço tem “faturas” a mais no nome."}},
+ assunto:{txt:"Sua fatura deste mês com 15% de desconto",a:{t:"Desconto inesperado",e:"Conta de luz não costuma ter desconto por e-mail. A vantagem é a isca."}},
+ linhas:[
+  {txt:"Segue o boleto da sua fatura deste mês."},
+  {txt:"Valor: R$ 119,00. Vencimento: hoje.",a:{t:"Valor e data diferentes",e:"Sua conta costuma vencer no dia 20 e ter outro valor. Vencer “hoje” é pressa."}},
+  {txt:"Beneficiário: J. R. Pagamentos Digitais Ltda.",a:{t:"O dinheiro vai para outro nome",e:"No boleto verdadeiro, quem recebe é a empresa de energia. Aqui aparece outro nome."}},
+  {txt:"O e-mail tem o logotipo e as cores da Luz do Vale.",pequena:true,n:"A aparência é igual à da empresa. Mas logotipo e cores são fáceis de copiar."}],
+ opcoes:[
+  {txt:"Pagar hoje para aproveitar o desconto",tipo:"risco",depois:"O pagamento foi para outra empresa. A conta de luz verdadeira continuou em aberto.",porque:"Antes de pagar um boleto, confira o nome de quem vai receber. Ele aparece na tela antes de confirmar."},
+  {txt:"Buscar a conta no aplicativo oficial da empresa ou na conta de papel",tipo:"boa",depois:"No aplicativo oficial, a fatura era de R$ 142,30 e vencia no dia 20. O e-mail era falso.",porque:"Buscar a conta no canal oficial garante que o dinheiro vai para a empresa certa."},
+  {txt:"Responder ao e-mail pedindo um boleto novo",tipo:"risco",depois:"Chegou outro boleto, também em nome de outra empresa.",porque:"Quem responde por aquele endereço é quem enviou o boleto falso."}],
+ regra:"Antes de pagar um boleto, confira quem vai receber o dinheiro."},
+
+{nivel:3,golpe:false,titulo:"A mensagem da Júlia",tipo:"Mensagem verdadeira",canal:"Aplicativo de mensagens",
+ intro:"Chega uma mensagem de um número que não está nos seus contatos. A pessoa diz ser a Júlia, sua filha.",
+ remetente:{txt:"(11) 96321-8840",sub:"Número que não está nos seus contatos",n:"Número novo, sozinho, não diz se é verdade ou golpe. É preciso olhar o resto."},
+ linhas:[
+  {txt:"Oi, mãe! É a Júlia. Troquei de operadora e este é o meu número novo.",n:"Golpistas também começam assim. Só esta frase não basta para confiar nem para bloquear."},
+  {txt:"Não precisa fazer nada agora.",b:{t:"Sem pressa",e:"Não há prazo nem urgência. Golpes quase sempre apressam."}},
+  {txt:"Quando puder, me liga neste número para ouvir a minha voz e salvar o contato.",b:{t:"Convida você a conferir",e:"A própria pessoa sugere a ligação. Golpista evita falar por voz."}},
+  {txt:"Domingo eu levo o bolo de fubá que a senhora pediu.",b:{t:"Assunto de vocês, sem pedido",e:"Fala de um combinado da família. Não pede dinheiro, senha nem dados."}}],
+ opcoes:[
+  {txt:"Bloquear na hora, porque número novo é sempre golpe",tipo:"excesso",depois:"A Júlia ficou dias sem conseguir falar com você por mensagem.",porque:"Aqui não havia pedido de dinheiro, pressa nem segredo. O caminho era conferir, não bloquear."},
+  {txt:"Salvar o número sem conferir",tipo:"risco",depois:"Desta vez era mesmo a Júlia. Mas foi sorte.",porque:"Salvar sem conferir cria o hábito que o golpe do número novo aproveita. Uma ligação rápida resolve."},
+  {txt:"Ligar para ouvir a voz dela e só então salvar o número",tipo:"boa",depois:"A Júlia atendeu, achou graça da sua desconfiança e disse que você fez certo.",porque:"Os sinais eram bons, e a ligação confirmou. Conferir não ofende ninguém da família."}],
+ regra:"Número novo de alguém conhecido: confira por voz antes de salvar."},
+
+{nivel:3,golpe:true,titulo:"A prova de vida",tipo:"Falso atendimento do INSS",canal:"Aplicativo de mensagens",
+ intro:"Chega uma mensagem com o brasão do governo na foto do perfil.",
+ remetente:{txt:"(61) 99644-2013",sub:"Diz ser “Atendimento INSS”, com foto oficial",a:{t:"Número comum de celular",e:"O INSS atende pelo telefone 135, pelo Meu INSS (site e aplicativo) e nas Agências da Previdência Social. Não por um celular qualquer."}},
+ linhas:[
+  {txt:"Prezado beneficiário, sua prova de vida está pendente.",a:{t:"Assunto verdadeiro usado como isca",e:"A prova de vida existe. Usar um assunto verdadeiro faz o golpe parecer oficial."}},
+  {txt:"Para não ter o benefício suspenso neste mês, regularize ainda hoje.",a:{t:"Ameaça com prazo",e:"Ameaçar cortar o benefício “ainda hoje” é pressão para você não conferir."}},
+  {txt:"Envie uma foto da frente e do verso do seu documento e uma foto do seu rosto.",a:{t:"Pedido de documento e foto do rosto",e:"Com documento e foto do rosto, golpistas tentam abrir contas e pedir empréstimos no seu nome."}},
+  {txt:"Atendimento de segunda a sexta, das 8h às 18h.",n:"Horário de atendimento dá aparência de coisa séria. Não prova nada."}],
+ opcoes:[
+  {txt:"Enviar as fotos para não perder o benefício",tipo:"risco",depois:"Semanas depois, apareceu um empréstimo que você não pediu, descontado do benefício.",porque:"Documento e foto do rosto valem tanto quanto uma senha. Não se enviam por mensagem."},
+  {txt:"Enviar só a foto do documento, sem a do rosto",tipo:"risco",depois:"A pessoa agradeceu e insistiu na foto do rosto, dizendo que faltava pouco.",porque:"A foto do documento já expõe os seus dados. E o golpista continua pedindo o resto."},
+  {txt:"Não enviar nada e conferir pelo 135 ou pelo Meu INSS",tipo:"boa",depois:"No 135, informaram que o seu benefício estava normal e que não havia pendência.",porque:"No canal oficial você descobre se a pendência existe, sem entregar nada a ninguém."}],
+ regra:"Foto de documento e do rosto não se enviam por mensagem. Confira no canal oficial."}
+];
+
+const tipoDe=x=>x.a?"a":x.b?"b":"n";
+const ROT={a:"Sinal de alerta",b:"Sinal de confiança",n:"Observação"};
+const ICO={a:ALERTA,b:CERTO,n:PONTO};
+const CLS={a:"achado",b:"bom",n:"visto"};
+function itens(c){
+  const l=[];
+  if(c.remetente.a||c.remetente.b||c.remetente.n) l.push(Object.assign({k:"r"},c.remetente));
+  if(c.assunto) l.push(Object.assign({k:"a"},c.assunto));
+  c.linhas.forEach((x,n)=>{ if(x.a||x.b||x.n) l.push(Object.assign({k:"l"+n},x)); });
+  return l;
+}
+const nulos=()=>CASOS.map(()=>null);
+function novo(){return {v:5,jog:null,jogNome:"",rec:null,tela:"inicio",fila:CASOS.map((_,i)=>i),pos:0,revisao:false,fase:"investigar",vistos:CASOS.map(()=>[]),orig:nulos(),res:nulos(),rod:nulos(),atual:null,dica:null,treino:false,dupla:false,conv:false,nome:"",erroNome:false,nomes:[],certNomes:[],erroCert:null,rasc:["",""],salvo:false,volta:"inicio"};}
+let S=novo();
+let escala=1;
+const palco=document.getElementById("palco"), aviso=document.getElementById("aviso"), ajuda=document.getElementById("ajuda");
+const casoAtual=()=>S.fila[S.pos];
+
+function aplicarEscala(){document.documentElement.style.setProperty("--escala",escala);}
+try{const e=parseFloat(localStorage.getItem("dd-escala"));if(e>=.85&&e<=1.45)escala=e;}catch(_){}
+aplicarEscala();
+
+const PESSOA='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="8" r="4.2"/><path d="M3.5 21c0-4.7 3.8-7.5 8.5-7.5s8.5 2.8 8.5 7.5z"/></svg>';
+const SOM_ICO='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.5L12 19V5L7.5 9.5z" fill="currentColor"/><path d="M15.5 9a4.5 4.5 0 010 6M18 6.5a8 8 0 010 11"/></svg>';
+const MEDALHA='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="currentColor" d="M12 4.6l2.2 4.6 5 .6-3.7 3.5 1 5-4.5-2.5-4.5 2.5 1-5-3.7-3.5 5-.6z"/></svg>';
+const CORUJA='<svg viewBox="0 0 120 132" role="img" aria-label="Lupita, a coruja detetive"><ellipse cx="56" cy="82" rx="38" ry="44" fill="var(--destaque)"/><ellipse cx="56" cy="96" rx="23" ry="26" fill="var(--bolha)"/><path d="M22 44h68v9H22z" fill="var(--moldura)" stroke="var(--linha)" stroke-width="1.5"/><path d="M28 44c0-17 12-28 28-28s28 11 28 28z" fill="var(--moldura)" stroke="var(--linha)" stroke-width="1.5"/><path d="M29 38h54" stroke="var(--marca)" stroke-width="5"/><circle cx="41" cy="68" r="14" fill="#FFFFFF" stroke="#14262B" stroke-width="3"/><circle cx="71" cy="68" r="14" fill="#FFFFFF" stroke="#14262B" stroke-width="3"/><circle cx="43" cy="69" r="5.5" fill="#14262B"/><circle cx="69" cy="69" r="5.5" fill="#14262B"/><path d="M50 78h12l-6 10z" fill="var(--marca)" stroke="#14262B" stroke-width="2" stroke-linejoin="round"/><path d="M40 125h10M62 125h10" stroke="var(--marca)" stroke-width="5" stroke-linecap="round"/><circle cx="98" cy="96" r="13" fill="var(--papel)" stroke="var(--tinta)" stroke-width="5"/><path d="M107 106l9 13" stroke="var(--tinta)" stroke-width="6" stroke-linecap="round"/></svg>';
+const DIST=["Faro para prêmio falso","Confiança na medida","Guardião da senha","Freio na corrente","Canal oficial","Liga antes do Pix","Conferente de avisos","Caça-perfil falso","Desliga e confere","Fiscal de boleto","Ouvido atento","Guardião dos documentos"];
+
+const guia=(texto,extra)=>`<div class="guia">${CORUJA}<div class="balao ${extra||""}">${texto}</div></div>`;
+const meioDe=c=>/SMS/.test(c.canal)?"sms":/E-mail/.test(c.canal)?"email":/Ligação/.test(c.canal)?"ligacao":/Aviso/.test(c.canal)?"aviso":"chat";
+function distintivoHtml(ci){
+  const g=S.res[ci]==="boa";
+  return `<div class="distintivo${g?" ganho":""}">${MEDALHA}<div><b>${g?"Distintivo conquistado":"Distintivo deste caso"}</b>${DIST[ci]}${g?"":". Você pode conquistá-lo na revisão, no final do jogo."}</div></div>`;
+}
+function medalhasHtml(){
+  const n=S.res.filter(t=>t==="boa").length;
+  return `<p class="contagem"><b>${n} de ${CASOS.length}</b> distintivos conquistados</p><ul class="medalhas">${CASOS.map((c,i)=>{const g=S.res[i]==="boa";
+    return `<li class="${g?"ganho":""}">${MEDALHA}<div>${DIST[i]}<small>${g?"Conquistado":"A conquistar"}</small></div></li>`;}).join("")}</ul>`;
+}
+
+/* Sons curtos, com botão para desligar */
+let som=false; try{ if(localStorage.getItem("dd-som")==="1") som=true; }catch(_){}
+let ctxSom=null;
+function tom(f,d,q){
+  try{ ctxSom=ctxSom||new (window.AudioContext||window.webkitAudioContext)();
+    const o=ctxSom.createOscillator(), g=ctxSom.createGain(), t0=ctxSom.currentTime+(q||0);
+    o.type="sine"; o.frequency.value=f;
+    g.gain.setValueAtTime(.0001,t0); g.gain.exponentialRampToValueAtTime(.12,t0+.02); g.gain.exponentialRampToValueAtTime(.0001,t0+d);
+    o.connect(g); g.connect(ctxSom.destination); o.start(t0); o.stop(t0+d+.03);
+  }catch(_){}
+}
+function tocar(q){ if(!som) return;
+  if(q==="a") tom(494,.16); else if(q==="b") tom(659,.16); else if(q==="n") tom(440,.1);
+  else if(q==="boa"){ tom(523,.15); tom(784,.28,.14); } else tom(349,.2); }
+function rotuloSom(){ const b=document.getElementById("botao-som"); if(b){ b.textContent=som?"Som ligado":"Som desligado"; b.setAttribute("aria-pressed",String(som)); } }
+
+/* Leitura em voz alta, quando o navegador oferece */
+const podeFalar=typeof speechSynthesis!=="undefined"&&typeof SpeechSynthesisUtterance!=="undefined";
+let falando=false;
+const limpo=h=>h.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
+function textoLeitura(){
+  const c=CASOS[casoAtual()], r=c.remetente;
+  if(S.fase==="explicar"){ const o=c.opcoes[S.atual];
+    return limpo([c.golpe?"Esta mensagem era um golpe: "+c.tipo+".":"Esta mensagem era verdadeira.","Você escolheu: "+o.txt+".","O que aconteceu depois: "+o.depois,o.porque,"Regra do detetive: "+c.regra].join(" ")); }
+  let t=[c.intro,c.canal+". De: "+r.txt+". "+r.sub+".",c.assunto?"Assunto: "+c.assunto.txt+".":""].concat(c.linhas.map(x=>x.txt));
+  if(S.fase==="decidir") t=t.concat(["O que você faria?"],c.opcoes.map((o,n)=>"Opção "+(n+1)+": "+o.txt+"."));
+  return limpo(t.join(" "));
+}
+function rotuloOuvir(){ const e=document.querySelector("#ouvir span"); if(e) e.textContent=falando?"Parar a leitura":"Ouvir a leitura"; }
+function calar(){ if(podeFalar&&falando){ try{speechSynthesis.cancel();}catch(_){} } falando=false; }
+function alternarLeitura(){
+  if(!podeFalar) return;
+  if(falando){ calar(); rotuloOuvir(); return; }
+  try{ const u=new SpeechSynthesisUtterance(textoLeitura()); u.lang="pt-BR"; u.rate=.9;
+    u.onend=u.onerror=()=>{ falando=false; rotuloOuvir(); };
+    speechSynthesis.cancel(); speechSynthesis.speak(u); falando=true; }catch(_){ falando=false; }
+  rotuloOuvir();
+}
+
+function trecho(x,ci,ativa){
+  const visto=S.vistos[ci].includes(x.k), t=tipoDe(x);
+  const cls="trecho"+(visto?" "+CLS[t]:"")+(S.dica===x.k?" dica":"")+(x.pequena?" pequena":"");
+  const rot=(visto?ROT[t]:"Investigar")+": "+x.txt.replace(/"/g,"&quot;");
+  const dentro=`<span>${x.txt}</span>${visto?ICO[t]:LUPA}`;
+  if(!ativa) return visto?`<div class="${cls} parado">${dentro}</div>`:`<p class="fala${x.pequena?" pequena":""}">${x.txt}</p>`;
+  return `<button class="${cls}" id="t-${ci}-${x.k}" data-ato="olhar" data-k="${x.k}" aria-label="${rot}">${dentro}</button>`;
+}
+function mensagem(c,ci,ativa){
+  const r=c.remetente, clic=x=>x.a||x.b||x.n, m=meioDe(c);
+  const tr=(x,k)=>trecho(Object.assign({k},x),ci,ativa);
+  const nu=h=>h.replace('class="fala','class="fala nua');
+  const rem=clic(r)?nu(tr(r,"r")):`<span class="nome">${r.txt}</span>`;
+  const linhas=c.linhas.map((x,n)=>clic(x)?tr(x,"l"+n):`<p class="fala${x.pequena?" pequena":""}">${x.txt}</p>`).join("");
+  const av=`<div class="avatar" aria-hidden="true">${/^[A-Za-zÀ-ú]/.test(r.txt)?r.txt[0]:PESSOA}</div>`;
+  const rot=`<p class="rotulo">${c.canal}</p>`;
+  if(m==="email") return rot+`<div class="janela"><div class="janela-topo" aria-hidden="true"><i></i><i></i><i></i><span>Caixa de entrada</span></div>
+    <div class="meta"><div class="meta-linha"><span>De</span>${rem}</div><div class="meta-linha"><span></span><span class="nota">${r.sub}</span></div>
+    ${c.assunto?`<div class="meta-linha"><span>Assunto</span>${nu(tr(c.assunto,"a"))}</div>`:""}</div><div class="corpo">${linhas}</div></div>`;
+  const quem=`<div class="quem">${rem}<span class="nota">${r.sub}</span></div>`;
+  const status=`<div class="status" aria-hidden="true"><span>14:32</span><span>4G · 82%</span></div>`;
+  let miolo;
+  if(m==="ligacao") miolo=`<div class="chamada">${av}${quem}<p class="em-curso">Ligação em andamento</p></div><div class="conversa"><p class="rotulo">O que a pessoa diz</p>${linhas}</div>`;
+  else if(m==="aviso") miolo=`<div class="bloqueio"><p class="relogio" aria-hidden="true">14:32</p><div class="notif"><div class="app-topo">${av}${quem}</div><div class="conversa">${linhas}</div></div></div>`;
+  else miolo=`<div class="app-topo">${av}${quem}</div><div class="conversa">${linhas}</div>`;
+  return rot+`<div class="aparelho ${m}"><div class="tela">${status}${miolo}</div></div>`;
+}
+
+function telaInicio(){
+  return `<section class="inicio">
+    <div class="bloco">
+      <div class="parceria"><img src="${LOGO}" alt="Logo da Associação Cuidaris" width="403" height="400"><span>Em parceria com a <strong>Associação Cuidaris</strong></span></div>
+      <div><p class="rotulo">Jogo educativo de segurança digital</p>
+      <h1 data-foco tabindex="-1">Detetive Digital</h1>
+      <p class="lema">Antes de clicar, <mark>investigue</mark>.</p></div>
+      ${guia("Olá! Eu sou a Lupita, a coruja detetive. Em cada caso, uma mensagem chega ao seu celular ou computador. Vamos descobrir juntos se ela é golpe ou se é verdadeira.")}
+      <div class="dupla"><button class="btn" id="dupla" data-ato="dupla" aria-pressed="${S.dupla}">Modo dupla: ${S.dupla?"ligado":"desligado"}</button>
+      <p class="nota">No modo dupla, duas pessoas jogam juntas no mesmo computador, e o jogo propõe uma pergunta para conversar antes de cada decisão.</p></div>
+      <form id="form-nome" class="form-cert" novalidate>
+        <label for="nome-jogador">${S.dupla?"Primeiro nome de quem vai jogar:":"Para começar, escreva o seu primeiro nome:"}</label>
+        <input class="campo" id="nome-jogador" name="nome" type="text" maxlength="30" autocomplete="off" value="${esc(S.rasc[0])}">
+        ${S.dupla?`<label for="nome-colega">Primeiro nome do colega:</label>
+        <input class="campo" id="nome-colega" name="colega" type="text" maxlength="30" autocomplete="off" value="${esc(S.rasc[1])}">`:""}
+        ${S.erroNome?`<p class="erro" role="alert">${S.dupla?"Escrevam os dois nomes nos campos acima ou escolham “Jogar sem nome”.":"Escreva o seu nome no campo acima ou escolha “Jogar sem nome”."}</p>`:""}
+        <div class="acoes"><button class="btn principal grande" id="comecar" type="submit">Começar a investigar</button>
+        <button class="btn" type="button" id="sem-nome" data-ato="comecar">Jogar sem nome</button></div>
+      </form>
+      ${conhecidosHtml()}
+      <p class="nota">Os nomes ficam guardados só neste computador, para salvar o progresso e o recorde. Não há senha.</p>
+      <p class="nota">São ${CASOS.length} casos em ${NIVEIS.length} níveis. Não há limite de tempo.</p>
+    </div>
+    <div class="pasta">
+      <h2>Como jogar</h2>
+      <ol class="passos">
+        <li><div><strong>Leia a mensagem.</strong> Em cada caso aparece uma mensagem, como as que chegam no celular.</div></li>
+        <li><div><strong>Investigue.</strong> Clique nas partes que têm a lupa e a borda tracejada. Cada clique mostra se aquela parte é um sinal de alerta, um sinal de confiança ou só uma observação.</div></li>
+        <li><div><strong>Decida.</strong> Escolha, entre três opções, o que você faria.</div></li>
+        <li><div><strong>Entenda.</strong> O jogo mostra o que aconteceu depois e explica o porquê.</div></li>
+      </ol>
+      <div class="treino">
+        <p><strong>Experimente agora.</strong> Clique na frase abaixo:</p>
+        <button class="trecho${S.treino?" achado":""}" id="treino" data-ato="treino" aria-label="${S.treino?"Sinal de alerta":"Investigar"}: Você ganhou um prêmio! Responda rápido."><span>Você ganhou um prêmio! Responda rápido.</span>${S.treino?ALERTA:LUPA}</button>
+        <p class="retorno" role="status">${S.treino?"Isso mesmo! Você encontrou um sinal de alerta: prêmio inesperado e pressa. No jogo, tudo o que você descobre fica guardado no seu caderno.":""}</p>
+      </div>
+      <p class="nota">Nem toda mensagem é golpe: algumas são verdadeiras. Todas são simulações criadas para o jogo.</p>
+    </div>
+  </section>
+  <p class="creditos">Projeto Integrador de Análise e Desenvolvimento de Sistemas, Centro Universitário Adventista de São Paulo, em parceria com a Associação Cuidaris. Alunos: Ana Carolina Souza Vieira e Dennys de Oliveira.</p>
+  <div><button class="btn" id="abrir-instrutor" data-ato="instrutor">Área do instrutor</button></div>`;
+}
+
+function telaNivel(){
+  const n=CASOS[casoAtual()].nivel, nv=NIVEIS[n-1], qtd=CASOS.filter(c=>c.nivel===n).length;
+  return `<section class="nivel pasta">
+    <p class="rotulo">Nível ${n} de ${NIVEIS.length}</p>
+    <h1 data-foco tabindex="-1">${nv.nome}</h1>
+    ${guia((n===1&&S.jogNome?`Olá, ${esc(S.jogNome)}! `:"")+nv.desc+(n===1&&recordeDe(S.jog)!==null?` ${S.nomes.length>1?"O recorde da dupla":"Seu recorde pessoal"} é de ${pl(recordeDe(S.jog))}.`:""))}
+    <p class="nota">Este nível tem ${qtd} casos.</p>
+    <div><button class="btn principal grande" id="abrir-nivel" data-ato="abrir-nivel">${n===1?"Abrir o primeiro caso":"Continuar investigando"}</button></div>
+  </section>`;
+}
+
+function painelInvestigar(c,ci){
+  const its=itens(c), vistos=S.vistos[ci], falta=its.length-vistos.length;
+  const lista=vistos.length?`<ul class="pistas">`+vistos.slice().reverse().map(k=>{const x=its.find(y=>y.k===k), t=tipoDe(x);
+      return `<li class="${t}"><span class="rotulo">${ROT[t]}</span>${t==="n"?x.n:`<strong>${x[t].t}</strong>${x[t].e}`}</li>`;}).join("")+`</ul>`
+    :`<p class="vazio">Seu caderno está vazio. Clique nas partes da mensagem que têm a lupa e a borda tracejada.</p>`;
+  return `<h2 data-foco tabindex="-1">Caderno do detetive</h2>
+   <div class="painel">
+    <p class="contagem"><b>${vistos.length} de ${its.length}</b> partes investigadas</p>
+    ${lista}
+    <div class="acoes">
+      ${falta?`<button class="btn" id="pedir-dica" data-ato="dica">Mostrar onde olhar</button>`:""}
+      <button class="btn principal" id="ir-decidir" data-ato="decidir">${falta?"Já quero decidir":"Investiguei tudo. Decidir"}</button>
+    </div>
+   </div>`;
+}
+function painelDecidir(c){
+  if(S.dupla&&!S.conv) return `<h2 data-foco tabindex="-1">Conversem antes de decidir</h2>
+   <div class="painel"><p class="pergunta">${PERG[casoAtual()]}</p>
+   <p class="nota">Cada pessoa diz o que faria nesta situação e por quê. Depois, escolham juntos.</p>
+   <div class="acoes"><button class="btn" id="voltar-investigar" data-ato="investigar">Voltar a investigar</button>
+   <button class="btn principal" id="conversou" data-ato="conversou">Já conversamos. Ver as opções</button></div></div>`;
+  return `<h2 data-foco tabindex="-1">O que você faria?</h2>
+   <div class="painel"><div class="opcoes">${c.opcoes.map((o,n)=>`<button class="opcao" id="opcao-${n}" data-ato="escolher" data-n="${n}">${o.txt}</button>`).join("")}</div>
+   <div class="acoes"><button class="btn" id="voltar-investigar" data-ato="investigar">Voltar a investigar</button></div></div>`;
+}
+function painelExplicar(c,ci){
+  const o=c.opcoes[S.atual], vistos=S.vistos[ci], ultimo=S.pos===S.fila.length-1;
+  const V={boa:["seguro",CERTO,c.golpe?"Atitude segura":"Boa decisão"],risco:["risco",ALERTA,"Atitude arriscada"],excesso:["excesso",PONTO,"Cuidado demais desta vez"]}[o.tipo];
+  const sinais=itens(c).filter(x=>x.a||x.b).map(x=>{const v=vistos.includes(x.k), t=tipoDe(x);
+    return `<li class="${t}">${ICO[t]}<div><strong>${x[t].t}</strong><small>${ROT[t]}${v?"":" que passou despercebido"}: ${x[t].e}</small></div></li>`;}).join("");
+  return `<h2 class="so-leitor">Explicação</h2>
+   <div class="painel">
+    <div class="veredito ${V[0]}">${V[1]}<h2 data-foco tabindex="-1">${V[2]}</h2></div>
+    <p class="verdade">${c.golpe?`Esta mensagem era um golpe: <strong>${c.tipo.toLowerCase()}</strong>.`:"Esta mensagem era <strong>verdadeira</strong>."}</p>
+    <p class="escolha">Você escolheu: ${o.txt}.</p>
+    <div class="depois"><b>O que aconteceu depois</b>${o.depois}</div>
+    <p>${o.porque}</p>
+    <div class="regra"><b>Regra do detetive</b>${c.regra}</div>
+    ${distintivoHtml(ci)}
+    <div><p class="rotulo">Sinais deste caso</p></div>
+    <ul class="sinais">${sinais}</ul>
+    <div class="acoes">
+      ${o.tipo==="boa"?"":`<button class="btn" id="outra" data-ato="decidir">Escolher outra atitude</button>`}
+      <button class="btn principal" id="proximo" data-ato="proximo">${ultimo?"Ver o resultado":"Próximo caso"}</button>
+    </div>
+   </div>`;
+}
+function telaCaso(){
+  const ci=casoAtual(), c=CASOS[ci], f=S.fase;
+  const et=[["investigar","1. Investigue"],["decidir","2. Decida"],["explicar","3. Entenda"]];
+  const painel=f==="investigar"?painelInvestigar(c,ci):f==="decidir"?painelDecidir(c):painelExplicar(c,ci);
+  const onde=S.revisao?`Revisão · Caso ${S.pos+1} de ${S.fila.length}`:`Nível ${c.nivel} de ${NIVEIS.length} · Caso ${ci+1} de ${CASOS.length}`;
+  return `<div class="pagina" style="padding:0;gap:1rem">
+   <div class="cabeca-caso">
+     <div><p class="rotulo">${onde}</p><h1>${c.titulo}</h1></div>
+     <ol class="etapas" aria-label="Etapas do caso">${et.map(e=>`<li${e[0]===f?' aria-current="step"':""}>${e[1]}</li>`).join("")}</ol>
+   </div>
+   <div class="caso">
+     <div class="coluna">${guia(c.intro+(f==="investigar"?" Clique nas partes com a lupa para investigar.":""))}${podeFalar?`<div><button class="btn" id="ouvir" data-ato="ouvir">${SOM_ICO}<span>Ouvir a leitura</span></button></div>`:""}${mensagem(c,ci,f==="investigar")}</div>
+     <div class="coluna">${painel}</div>
+   </div></div>`;
+}
+function telaFim(){
+  const N=CASOS.length, boas=S.res.filter(t=>t==="boa").length, rever=N-boas;
+  let total=0, achadas=0;
+  CASOS.forEach((c,i)=>{const p=itens(c).filter(x=>x.a);total+=p.length;achadas+=p.filter(x=>S.vistos[i].includes(x.k)).length;});
+  const titulo=(boas===N?"Parabéns, detetive!":boas>=N/2?"Muito bem, detetive!":"Você chegou até o fim, detetive!").replace("detetive",S.jogNome?esc(S.jogNome):"detetive");
+  const frase=boas===N?"Você tomou uma boa decisão em todos os casos. Agora você pode ajudar família e amigos a reconhecer esses sinais."
+    :boas>=N/2?"Você já reconhece a maioria dos sinais. Cada caso que você investigou deixa você mais preparado para as mensagens do dia a dia."
+    :"Você investigou todos os casos, e isso é o mais importante. Esses golpes são feitos para enganar e enganam muita gente atenta. Agora você conhece sinais que antes passavam despercebidos.";
+  const convite=rever?"Errar aqui não custa nada: é no jogo que se aprende. Você pode rever só os casos que ficaram para trás, com calma.":"Quando quiser, jogue de novo para relembrar.";
+  const regras=[...new Set(CASOS.map(c=>c.regra))];
+  return `<section class="fim">
+    <div class="coluna" style="gap:1.25rem">
+      <div><p class="rotulo">Investigação encerrada</p><h1 data-foco tabindex="-1">${titulo}</h1></div>
+      ${guia(frase,"incentivo")}
+      <div class="placar">
+        <div><b>${boas} de ${N}</b>casos com boa decisão</div>
+        <div><b>${achadas} de ${total}</b>sinais de alerta encontrados</div>
+      </div>
+      ${recordeHtml(boas)}
+      <p>${convite}</p>
+      <div class="acoes">
+        ${rever?`<button class="btn principal grande" id="revisar" data-ato="revisar">Rever ${rever===1?"1 caso":rever+" casos"}</button>`:""}
+        <button class="btn ${rever?"":"principal "}grande" id="de-novo" data-ato="reiniciar">Jogar tudo de novo</button>
+        <button class="btn grande" id="trocar" data-ato="inicio">Trocar de jogador</button>
+      </div>
+      <ul class="resumo">${CASOS.map((c,i)=>{const ok=S.res[i]==="boa", rev=ok&&S.orig[i]!=="boa";
+        return `<li><span>Caso ${i+1}: ${c.tipo}</span><span class="selo ${ok?"s":"r"}">${rev?"Resolvido na revisão":ok?"Boa decisão":"Vale rever"}</span></li>`;}).join("")}</ul>
+      <div><button class="btn" id="abrir-instrutor" data-ato="instrutor">Área do instrutor</button></div>
+    </div>
+    <div class="coluna" style="gap:1.25rem">
+    ${certHtml()}
+    <div class="pasta"><h2>Seus distintivos</h2>${medalhasHtml()}</div>
+    <div class="pasta">
+      <h2>As regras do detetive</h2>
+      <ol class="regras">${regras.map(r=>`<li>${r}</li>`).join("")}</ol>
+      <p class="nota">Antes de clicar, responder, compartilhar ou enviar dinheiro, investigue.</p>
+    </div></div>
+  </section>`;
+}
+
+const esc=t=>String(t).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const PERG=[
+ "Vocês já receberam uma mensagem dizendo que ganharam um prêmio? O que fizeram?",
+ "Como vocês sabem que uma mensagem é mesmo da clínica ou do médico?",
+ "Alguém já pediu a vocês um código que chegou no celular?",
+ "Vocês costumam repassar mensagens no grupo da família? Como decidem?",
+ "Como vocês falam com o banco quando têm uma dúvida?",
+ "Se um filho ou neto pedisse dinheiro por mensagem, como vocês confirmariam que é ele?",
+ "Vocês recebem avisos de compra no celular? Já estranharam algum?",
+ "O que faria vocês desconfiarem de uma mensagem de um amigo ou vizinho?",
+ "Já receberam uma ligação de alguém dizendo ser do banco? Como foi?",
+ "O que vocês conferem antes de pagar uma conta?",
+ "Quando alguém da família troca de número, como vocês ficam sabendo?",
+ "Onde vocês tiram dúvidas sobre aposentadoria ou benefício?"];
+
+/* Registro das partidas neste computador, sem nomes */
+const TIPOS=["boa","risco","excesso"];
+function lerSessoes(){ try{ const a=JSON.parse(localStorage.getItem("dd-sessoes")||"[]"); return Array.isArray(a)?a:[]; }catch(_){ return []; } }
+function salvarSessao(){
+  try{ const a=lerSessoes();
+    a.push({d:new Date().toISOString(),dupla:!!S.dupla,res:S.orig.slice(),perd:CASOS.map((c,i)=>itens(c).filter(x=>x.a&&!S.vistos[i].includes(x.k)).map(x=>x.k))});
+    localStorage.setItem("dd-sessoes",JSON.stringify(a.slice(-300)));
+  }catch(_){}
+}
+function estatisticas(){
+  const ss=lerSessoes();
+  const casos=CASOS.map((c,i)=>{ const st={n:0,boa:0,risco:0,excesso:0,top:""}, perd={};
+    ss.forEach(x=>{ const t=x&&Array.isArray(x.res)?x.res[i]:null; if(!TIPOS.includes(t)) return; st.n++; st[t]++;
+      (Array.isArray(x.perd)&&Array.isArray(x.perd[i])?x.perd[i]:[]).forEach(k=>{ perd[k]=(perd[k]||0)+1; }); });
+    const k=Object.keys(perd).sort((a,b)=>perd[b]-perd[a])[0], it=k&&itens(c).find(y=>y.k===k);
+    if(it&&it.a) st.top=it.a.t+" ("+perd[k]+" de "+st.n+")";
+    return st; });
+  return {ss,casos};
+}
+const dataCurta=d=>{ try{ return new Date(d).toLocaleDateString("pt-BR"); }catch(_){ return ""; } };
+function textoResumo(e){
+  const N=e.ss.length, l=["Detetive Digital: resumo das sessões","Sessões registradas neste computador: "+N+(N?" (de "+dataCurta(e.ss[0].d)+" a "+dataCurta(e.ss[N-1].d)+")":""),""];
+  CASOS.forEach((c,i)=>{ const st=e.casos[i];
+    l.push("Caso "+(i+1)+" ("+c.tipo+"): boa decisão na primeira escolha em "+st.boa+" de "+st.n+"; arriscada em "+st.risco+"; cuidado demais em "+st.excesso+"."+(st.top?" Sinal de alerta mais ignorado: "+st.top+".":"")); });
+  return l.join("\n");
+}
+let confApagar=false;
+function telaInstrutor(){
+  const e=estatisticas(), N=e.ss.length;
+  const cab=`<div><p class="rotulo">Área do instrutor</p><h1 data-foco tabindex="-1">Resumo das sessões</h1></div>
+    <p>Cada partida que chega à tela final neste computador fica registrada aqui. Os registros não guardam nomes e não saem deste computador.</p>`;
+  const voltar=`<button class="btn" id="voltar-instrutor" data-ato="voltar">Voltar</button>`;
+  if(!N) return `<section class="instrutor">${cab}<p class="vazio">Ainda não há partidas terminadas neste computador. O resumo aparece quando alguém chegar à tela final do jogo.</p>${blocoJogadores()}<div>${voltar}</div></section>`;
+  const total=e.casos.reduce((a,st)=>a+st.n,0), boas=e.casos.reduce((a,st)=>a+st.boa,0), duplas=e.ss.filter(x=>x&&x.dupla).length;
+  const dif=CASOS.map((c,i)=>({c,i,st:e.casos[i]})).filter(x=>x.st.n&&x.st.boa<x.st.n).sort((a,b)=>a.st.boa/a.st.n-b.st.boa/b.st.n).slice(0,3);
+  const linhas=CASOS.map((c,i)=>{ const st=e.casos[i];
+    return `<tr><th scope="row">Caso ${i+1}: ${c.tipo}</th><td class="num">${st.boa} de ${st.n}</td><td class="num">${st.risco}</td><td class="num">${st.excesso}</td><td>${st.top||"Nenhum"}</td></tr>`; }).join("");
+  return `<section class="instrutor">${cab}
+    <div class="placar">
+      <div><b>${N}</b>${N===1?"sessão registrada":"sessões registradas"}${duplas?`, ${duplas} em dupla`:""}</div>
+      <div><b>${boas} de ${total}</b>boas decisões na primeira escolha</div>
+    </div>
+    ${dif.length?`<div class="pasta"><h2>Casos com mais dificuldade</h2><ol class="lista-simples">${dif.map(x=>`<li>Caso ${x.i+1}: ${x.c.tipo}. Boa decisão em ${x.st.boa} de ${x.st.n}.</li>`).join("")}</ol></div>`:""}
+    <div class="rolagem"><table class="tabela">
+      <thead><tr><th scope="col">Caso</th><th scope="col">Boa decisão</th><th scope="col">Arriscada</th><th scope="col">Cuidado demais</th><th scope="col">Sinal de alerta mais ignorado</th></tr></thead>
+      <tbody>${linhas}</tbody></table></div>
+    <p class="nota">Os números contam a primeira escolha de cada partida. O sinal mais ignorado é o que mais vezes ficou sem ser clicado.</p>
+    <div><label class="rotulo" for="resumo-texto">Resumo em texto, para colar no relatório</label>
+    <textarea class="resumo-texto" id="resumo-texto" readonly rows="8">${esc(textoResumo(e))}</textarea></div>
+    <div class="acoes">
+      <button class="btn principal" id="copiar-resumo" data-ato="copiar">Copiar o resumo</button>
+      ${confApagar?`<button class="btn" id="apagar-sim" data-ato="apagar-sim">Sim, apagar tudo</button><button class="btn" id="apagar-nao" data-ato="apagar-nao">Não apagar</button>`
+                  :`<button class="btn" id="apagar" data-ato="apagar">Apagar os registros</button>`}
+      ${voltar}
+    </div>
+    ${confApagar?`<p class="erro" role="alert">Apagar remove todas as sessões registradas neste computador. Não dá para desfazer.</p>`:""}
+    ${blocoJogadores()}
+  </section>`;
+}
+function telaCert(){
+  const N=CASOS.length, boas=S.res.filter(t=>t==="boa").length;
+  const data=new Date().toLocaleDateString("pt-BR",{day:"numeric",month:"long",year:"numeric"});
+  return `<section class="cert-area">
+    <div class="cert">
+      <div class="cert-logos"><img src="${LOGO}" alt="Logo da Associação Cuidaris" width="403" height="400">${CORUJA}</div>
+      <p class="rotulo">Certificado</p>
+      <h1 data-foco tabindex="-1">Detetive Digital</h1>
+      <p>Este certificado reconhece que</p>
+      <p class="cert-nome">${esc(S.nome)}</p>
+      <p>investigou ${N} casos de segurança digital${boas?` e conquistou ${boas} de ${N} distintivos`:""}.</p>
+      <p class="lema">Antes de clicar, <mark>investigue</mark>.</p>
+      <p class="nota">${data}</p>
+      <p class="nota cert-rodape">Jogo educativo do Projeto Integrador de Análise e Desenvolvimento de Sistemas do Centro Universitário Adventista de São Paulo, em parceria com a Associação Cuidaris.</p>
+    </div>
+    <p class="nota">Você pode fotografar esta tela para guardar o certificado.</p>
+    <div><button class="btn principal" id="voltar-cert" data-ato="voltar">Voltar ao resultado</button></div>
+  </section>`;
+}
+
+/* Jogadores deste computador: nome, progresso salvo e recorde pessoal. Sem senha. */
+const pl=n=>n===1?"1 distintivo":n+" distintivos";
+const chaveDe=n=>"j:"+String(n).trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/\s+/g," ");
+function lerJog(){ try{ const o=JSON.parse(localStorage.getItem("dd-jogadores")||"{}"); return o&&typeof o==="object"&&!Array.isArray(o)?o:{}; }catch(_){ return {}; } }
+function gravarJog(o){ try{ localStorage.setItem("dd-jogadores",JSON.stringify(o)); }catch(_){} }
+const saveValido=v=>!!(v&&v.v===5&&Array.isArray(v.vistos)&&v.vistos.length===CASOS.length&&Array.isArray(v.fila)&&(v.tela==="nivel"||v.tela==="caso"));
+function recordeDe(ch){ if(!ch) return null; const j=lerJog()[ch]; return j&&typeof j.recorde==="number"?j.recorde:null; }
+function guardarProgresso(){
+  if(!S.jog) return; const o=lerJog(), j=o[S.jog]||{nome:S.jogNome};
+  j.salvo=S; j.quando=Date.now(); o[S.jog]=j; gravarJog(o);
+}
+function registrarFim(principal){
+  if(!S.jog) return; const o=lerJog(), j=o[S.jog]||{nome:S.jogNome}, boas=S.res.filter(t=>t==="boa").length;
+  if(principal){ S.rec={ant:typeof j.ultima==="number"?j.ultima:null,recAnt:typeof j.recorde==="number"?j.recorde:null}; j.partidas=(j.partidas||0)+1; }
+  j.ultima=boas; j.recorde=Math.max(typeof j.recorde==="number"?j.recorde:0,boas); j.salvo=null; j.quando=Date.now();
+  o[S.jog]=j; gravarJog(o);
+}
+function conhecidosHtml(){
+  const o=lerJog(), l=Object.keys(o).filter(k=>k.indexOf("j:")===0&&o[k]&&o[k].nome).sort((a,b)=>(o[b].quando||0)-(o[a].quando||0)).slice(0,12);
+  if(!l.length) return "";
+  return `<div class="dupla"><p><strong>Já jogou neste computador?</strong> Escolha o seu nome ou o da sua dupla:</p>
+    <div class="acoes nomes">${l.map((k,n)=>`<button class="btn" type="button" id="jogador-${n}" data-ato="entrar" data-ch="${esc(k)}">${esc(o[k].nome)}</button>`).join("")}</div></div>`;
+}
+/* Uma pessoa entra com o próprio nome. Uma dupla entra com os dois nomes e tem progresso e recorde próprios. */
+function entrar(nomes){
+  nomes=nomes.map(x=>String(x).trim().slice(0,30)); if(!nomes.length||nomes.some(x=>!x)) return;
+  const ch=nomes.length>1?"j:"+nomes.map(x=>chaveDe(x).slice(2)).sort().join(" + "):chaveDe(nomes[0]);
+  const o=lerJog();
+  if(!o[ch]){ o[ch]={nome:nomes.join(" e "),nomes:nomes,quando:Date.now()}; gravarJog(o); }
+  entrarChave(ch);
+}
+function entrarChave(ch){
+  const j=lerJog()[ch]; if(!j) return;
+  const nomes=Array.isArray(j.nomes)&&j.nomes.length?j.nomes.map(String):[String(j.nome)];
+  S=novo(); S.dupla=nomes.length>1; S.jog=ch; S.nomes=nomes; S.jogNome=nomes.join(" e "); S.certNomes=nomes.slice();
+  S.tela=saveValido(j.salvo)?"retomar":"nivel"; desenhar(true);
+}
+function telaRetomar(){
+  const j=lerJog()[S.jog]||{}, sv=saveValido(j.salvo)?j.salvo:null, n=sv?sv.fila[sv.pos]+1:1, par=S.nomes.length>1;
+  const onde=`no caso ${n} de ${CASOS.length}${sv&&sv.revisao?", durante a revisão":""}`;
+  return `<section class="retomar pasta">
+    <p class="rotulo">Progresso salvo</p>
+    <h1 data-foco tabindex="-1">${par?"Que bom ver vocês de novo!":"Que bom ver você de novo!"}</h1>
+    ${guia(par?`Olá, ${esc(S.jogNome)}! Da última vez vocês pararam ${onde}. Querem continuar de onde pararam?`:`Olá, ${esc(S.jogNome)}! Da última vez você parou ${onde}. Quer continuar de onde parou?`)}
+    <div class="acoes"><button class="btn principal grande" id="continuar" data-ato="continuar">${par?"Continuar de onde paramos":"Continuar de onde parei"}</button>
+    <button class="btn grande" id="do-inicio" data-ato="do-inicio">Começar do início</button></div>
+  </section>`;
+}
+function recordeHtml(boas){
+  if(!S.jog||!S.rec) return "";
+  const r=S.rec, par=S.nomes.length>1; let t;
+  if(r.recAnt===null) t=par?`Este é o primeiro resultado da dupla: ${pl(boas)}. Ele fica guardado como o recorde da dupla.`
+                           :`Este é o seu primeiro resultado: ${pl(boas)}. Ele fica guardado como o seu recorde pessoal.`;
+  else t=`Da última vez: ${pl(r.ant===null?r.recAnt:r.ant)}. Hoje: ${pl(boas)}. `+(
+    boas>r.recAnt?(par?"Novo recorde da dupla!":"Novo recorde pessoal!")
+    :boas===r.recAnt?(par?"Vocês igualaram o recorde da dupla.":"Você igualou o seu recorde pessoal.")
+    :(par?`O recorde da dupla é de ${pl(r.recAnt)}. Cada partida deixa vocês mais preparados.`:`Seu recorde pessoal é de ${pl(r.recAnt)}. Cada partida deixa você mais preparado.`));
+  return `<div class="recorde"><b>${par?"Recorde da dupla":"Seu recorde pessoal"}</b>${t}</div>`;
+}
+const listaCert=()=>S.certNomes.length?S.certNomes:(S.dupla?["",""]:[""]);
+function certHtml(){
+  const l=listaCert(), par=l.length>1;
+  return `<div class="pasta"><h2>${par?"Certificados":"Seu certificado"}</h2>
+    ${par?`<p>Cada pessoa da dupla recebe o seu certificado. Confiram os nomes e abram um de cada vez.</p>`:""}
+    ${l.map((nm,i)=>`<form id="form-cert-${i}" class="form-cert" novalidate>
+      <label for="nome-cert-${i}">${par?`Nome para o ${i+1}º certificado:`:"Escreva o seu nome para aparecer no certificado:"}</label>
+      <input class="campo" id="nome-cert-${i}" name="nome" type="text" maxlength="60" autocomplete="off" value="${esc(nm)}">
+      ${S.erroCert===i?`<p class="erro" role="alert">Escreva o nome no campo acima para ver o certificado.</p>`:""}
+      <div><button class="btn principal" id="ver-cert-${i}" type="submit">${par?`Ver o ${i+1}º certificado`:"Ver o certificado"}</button></div>
+    </form>`).join("")}</div>`;
+}
+let confJog=false;
+function blocoJogadores(){
+  const o=lerJog(), n=Object.keys(o).filter(k=>k.indexOf("j:")===0).length;
+  if(!n) return "";
+  return `<div class="pasta"><h2>Nomes e progresso salvos</h2>
+    <p>${n===1?"Há 1 nome salvo":"Há "+n+" nomes salvos"} neste computador, com o progresso e o recorde pessoal de cada jogador. O jogo não compara os jogadores entre si.</p>
+    <div class="acoes">${confJog?`<button class="btn" id="apagar-jog-sim" data-ato="apagar-jog-sim">Sim, apagar nomes e progresso</button><button class="btn" id="apagar-jog-nao" data-ato="apagar-jog-nao">Não apagar</button>`
+      :`<button class="btn" id="apagar-jog" data-ato="apagar-jog">Apagar nomes e progresso salvos</button>`}</div>
+    ${confJog?`<p class="erro" role="alert">Os jogadores perdem o progresso e o recorde pessoal. Não dá para desfazer.</p>`:""}</div>`;
+}
+
+function desenhar(focar){
+  if(focar) calar();
+  palco.innerHTML=({inicio:telaInicio,nivel:telaNivel,caso:telaCaso,cert:telaCert,instrutor:telaInstrutor,retomar:telaRetomar}[S.tela]||telaFim)();
+  if(S.tela==="nivel"||S.tela==="caso") guardarProgresso();
+  if(focar){const f=palco.querySelector("[data-foco]"); if(f){f.focus({preventScroll:true}); window.scrollTo({top:0});}}
+}
+
+document.addEventListener("click",ev=>{
+  const b=ev.target.closest("[data-ato]"); if(!b) return;
+  const ato=b.dataset.ato, ci=casoAtual(), c=CASOS[ci];
+  if(ato==="ajuda"){ if(ajuda.showModal) ajuda.showModal(); else ajuda.setAttribute("open",""); return; }
+  if(ato==="fechar-ajuda"){ ajuda.close(); return; }
+  if(ato==="som"){ som=!som; try{localStorage.setItem("dd-som",som?"1":"0");}catch(_){} rotuloSom(); if(som) tocar("b"); return; }
+  if(ato==="ouvir"){ alternarLeitura(); return; }
+  if(ato==="letra"){ escala=Math.min(1.45,Math.max(.85,Math.round((escala+Number(b.dataset.v)*.15)*100)/100)); aplicarEscala(); try{localStorage.setItem("dd-escala",escala);}catch(_){} return; }
+  if(ato==="treino"){ S.treino=true; desenhar(false); const t=document.getElementById("treino"); if(t) t.focus({preventScroll:true}); return; }
+  if(ato==="comecar"||ato==="reiniciar"||ato==="do-inicio"){ const d=S.dupla, j=ato==="comecar"?null:S.jog, ns=j?S.nomes:[]; S=novo(); S.dupla=d; S.jog=j; S.nomes=ns; S.jogNome=ns.join(" e "); S.certNomes=ns.slice(); S.tela="nivel"; desenhar(true); return; }
+  if(ato==="entrar"){ entrarChave(b.dataset.ch); return; }
+  if(ato==="continuar"){ const j=lerJog()[S.jog]; if(j&&saveValido(j.salvo)) S=j.salvo; else S.tela="nivel"; desenhar(true); return; }
+  if(ato==="inicio"){ if(ajuda.open) ajuda.close(); const d=S.dupla; S=novo(); S.dupla=d; desenhar(true); return; }
+  if(ato==="apagar-jog"){ confJog=true; desenhar(false); return; }
+  if(ato==="apagar-jog-nao"){ confJog=false; desenhar(false); return; }
+  if(ato==="apagar-jog-sim"){ try{localStorage.removeItem("dd-jogadores");}catch(_){} confJog=false; desenhar(true); return; }
+  if(ato==="dupla"){ lerRascunho(); S.dupla=!S.dupla; S.erroNome=false; desenhar(false); const e=document.getElementById("dupla"); if(e) e.focus({preventScroll:true}); return; }
+  if(ato==="conversou"){ S.conv=true; desenhar(true); return; }
+  if(ato==="instrutor"){ S.volta=S.tela; S.tela="instrutor"; confApagar=false; desenhar(true); return; }
+  if(ato==="voltar"){ S.tela=S.tela==="cert"?"fim":(S.volta||"inicio"); desenhar(true); return; }
+  if(ato==="apagar"){ confApagar=true; desenhar(false); return; }
+  if(ato==="apagar-nao"){ confApagar=false; desenhar(false); return; }
+  if(ato==="apagar-sim"){ try{localStorage.removeItem("dd-sessoes");}catch(_){} confApagar=false; desenhar(true); return; }
+  if(ato==="copiar"){
+    const ta=document.getElementById("resumo-texto"); if(!ta) return;
+    const ok=()=>{ b.textContent="Resumo copiado"; aviso.textContent="Resumo copiado."; };
+    const falha=()=>{ ta.focus(); ta.select(); b.textContent="Texto selecionado: use Ctrl+C"; };
+    try{ navigator.clipboard.writeText(ta.value).then(ok,falha); }catch(_){ falha(); }
+    return;
+  }
+  if(ato==="abrir-nivel"){ S.tela="caso"; S.conv=false; S.fase="investigar"; desenhar(true); return; }
+  if(ato==="revisar"){
+    S.fila=CASOS.map((_,i)=>i).filter(i=>S.res[i]!=="boa"); if(!S.fila.length) return;
+    S.fila.forEach(i=>{S.rod[i]=null;}); S.pos=0; S.conv=false; S.revisao=true; S.fase="investigar"; S.atual=null; S.tela="caso"; desenhar(true); return;
+  }
+  if(ato==="olhar"){
+    const k=b.dataset.k, x=itens(c).find(y=>y.k===k), t=tipoDe(x);
+    S.dica=null;
+    if(!S.vistos[ci].includes(k)){ S.vistos[ci].push(k); tocar(t); aviso.textContent=ROT[t]+": "+(t==="n"?x.n:x[t].t+". "+x[t].e); }
+    desenhar(false);
+    const n=document.getElementById(`t-${ci}-${k}`); if(n) n.focus({preventScroll:true});
+    return;
+  }
+  if(ato==="dica"){
+    const falta=itens(c).find(x=>!S.vistos[ci].includes(x.k)); if(!falta) return;
+    S.dica=falta.k; desenhar(false);
+    const n=document.getElementById(`t-${ci}-${falta.k}`);
+    if(n){ n.scrollIntoView({block:"center",behavior:"smooth"}); n.focus({preventScroll:true}); }
+    aviso.textContent="Olhe a parte destacada da mensagem.";
+    return;
+  }
+  if(ato==="decidir"){ S.fase="decidir"; S.dica=null; desenhar(true); return; }
+  if(ato==="investigar"){ S.fase="investigar"; desenhar(true); return; }
+  if(ato==="escolher"){
+    const n=Number(b.dataset.n), t=c.opcoes[n].tipo;
+    if(S.rod[ci]===null){ S.rod[ci]=n; S.res[ci]=t; if(S.orig[ci]===null) S.orig[ci]=t; }
+    tocar(t==="boa"?"boa":"outra"); S.atual=n; S.fase="explicar"; desenhar(true); return;
+  }
+  if(ato==="proximo"){
+    S.atual=null; S.dica=null;
+    S.conv=false;
+    if(S.pos===S.fila.length-1){ if(!S.revisao&&!S.salvo){ salvarSessao(); S.salvo=true; } registrarFim(!S.revisao); S.tela="fim"; S.revisao=false; }
+    else { S.pos++; S.fase="investigar"; S.tela=(!S.revisao&&CASOS[casoAtual()].nivel!==c.nivel)?"nivel":"caso"; }
+    desenhar(true); return;
+  }
+});
+
+function lerRascunho(){ const a=document.getElementById("nome-jogador"), c=document.getElementById("nome-colega"); S.rasc=[a?a.value||"":S.rasc[0], c?c.value||"":S.rasc[1]]; }
+document.addEventListener("submit",ev=>{
+  ev.preventDefault();
+  if(ev.target.id==="form-nome"){
+    lerRascunho();
+    const nomes=(S.dupla?S.rasc:[S.rasc[0]]).map(x=>x.trim());
+    const vazio=nomes.findIndex(x=>!x);
+    if(vazio>=0){ S.erroNome=true; desenhar(false); const c=document.getElementById(vazio?"nome-colega":"nome-jogador"); if(c) c.focus(); return; }
+    entrar(nomes); return;
+  }
+  const m=/^form-cert-(\d+)$/.exec(ev.target.id||""); if(!m) return;
+  const i=Number(m[1]);
+  S.certNomes=listaCert().map((_,k)=>{ const c=document.getElementById("nome-cert-"+k); return c?(c.value||"").trim().slice(0,60):""; });
+  const v=S.certNomes[i];
+  if(!v){ S.erroCert=i; desenhar(false); const c=document.getElementById("nome-cert-"+i); if(c) c.focus(); return; }
+  S.erroCert=null; S.nome=v; S.tela="cert"; desenhar(true);
+});
+rotuloSom();
+function iniciar(d){ if(d&&d.v===5&&Array.isArray(d.vistos)&&d.vistos.length===CASOS.length) S=d; desenhar(false); }
+const quente=window.claude&&window.claude.hot;
+if(quente&&quente.snapshot) quente.snapshot(()=>S);
+if(quente&&quente.ready) quente.ready(iniciar); else iniciar((quente&&quente.data)||{});
+</script>
+
+</body></html>
